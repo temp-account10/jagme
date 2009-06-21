@@ -16,7 +16,7 @@ public class ImageProvider
 	 * The icon cache
 	 */
 	private static Map<String, Image> cache = new HashMap<String, Image>();
-
+    
 	public static Image getImage(String name)
 	{
 		return getImage("", name);
@@ -105,21 +105,48 @@ public class ImageProvider
 		return img;
 	}
 
+	private static URL getImageUrl(String path, String name)
+    {
+        if(path.startsWith("resource://"))
+        {
+            String p = path.substring("resource://".length());
+            
+            URL res;
+            if ((res = ClassLoader.getSystemClassLoader().getResource(p+name)) != null)
+                return res;
+        }
+        else
+        {
+            try {
+                File f = new File(path, name);
+                if(f.exists())
+                    return f.toURI().toURL();
+            } catch (MalformedURLException e) {}
+        }
+        return null;
+    }
+	
 	private static URL getImageUrl(String imageName)
 	{
+		URL url;
+		
 	    // Try user-preference directory first
-    	try
-    	{
-    		String path = "images/"+imageName;
-    		if (new File(path).exists())
-    		{
-    			return new URL("file", "", path);
+   		String path = "images/"+imageName;
+   		if (new File(path).exists())
+   		{
+   			try
+   			{
+    			url = new URL("file", "", path);
+    			if(url != null) return url;
     		}
+   			catch (MalformedURLException e)
+   			{
+   				// TODO
+   			}
     	}
-    	catch (MalformedURLException e)
-    	{
-    		// TODO
-    	}
+   		
+   		url = getImageUrl("resource://images/", imageName);
+        if(url != null) return url;
 
 	    return null;
     }
