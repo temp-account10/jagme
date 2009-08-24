@@ -8,13 +8,13 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import maps.MapSource;
 
-public class BackgroundAction extends ApplicationAction
+public class ChangeMapSourceAction extends ApplicationAction
 {
 	private static final long serialVersionUID = 1L;
 	private MapComponent mapComponent;
 	private MapSource mapSource;
 	
-	public BackgroundAction(MapSource mapSource, MapComponent mapComponent)
+	public ChangeMapSourceAction(MapSource mapSource, MapComponent mapComponent)
 	{
 		super(mapSource.getName(), null, 0, 0);
 		
