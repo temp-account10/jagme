@@ -8,6 +8,8 @@ import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 
+import org.jdesktop.swingx.mapviewer.GeoPosition;
+
 public class GotoCoordinateDialog {
 
 	private JDialog dialog;
@@ -18,6 +20,8 @@ public class GotoCoordinateDialog {
 	private JButton okButton;
 	private JButton cancelButton;
 	
+	private GeoPosition geoPosition;
+	
 	public GotoCoordinateDialog()
 	{
 		initializeComponents();
@@ -26,10 +30,11 @@ public class GotoCoordinateDialog {
 	private void initializeComponents()
 	{
 		dialog = new JDialog();
+		dialog.setTitle("Goto coordinate");
 		dialog.setModal(true);
 		dialog.setSize(300, 200);
 		
-		GridLayout gridLayout = new GridLayout(2,2);
+		GridLayout gridLayout = new GridLayout(3,2);
 		dialog.setLayout(gridLayout);
 		
 		latitudeLabel = new JLabel("Latitude:");
@@ -41,6 +46,29 @@ public class GotoCoordinateDialog {
 		dialog.add(longitudeLabel);
 		longitudeTextField = new JFormattedTextField(new DecimalFormat("#.###"));
 		dialog.add(longitudeTextField);
+		
+		okButton = new JButton("OK");
+		dialog.add(okButton);
+		
+		cancelButton = new JButton("Cancel");
+		dialog.add(cancelButton);
+	}
+	
+	private void updateGeoPosition()
+	{
+		latitudeTextField.setText(new Double(geoPosition.getLatitude()).toString());
+		longitudeTextField.setText(new Double(geoPosition.getLongitude()).toString());
+	}
+	
+	public void setGeoPosition(GeoPosition geoPosition)
+	{
+		this.geoPosition = geoPosition;
+		updateGeoPosition();
+	}
+	
+	public void getGeoPosition(GeoPosition geoPosition)
+	{
+		
 	}
 	
 	public void show()
