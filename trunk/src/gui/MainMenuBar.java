@@ -9,7 +9,7 @@ import maps.MapProvider;
 import maps.Maps.Map;
 import actions.AboutAction;
 import actions.ApplicationAction;
-import actions.BackgroundAction;
+import actions.ChangeMapSourceAction;
 import actions.ExitAction;
 import actions.OpenAction;
 
@@ -22,15 +22,16 @@ public class MainMenuBar extends JMenuBar
 	public final ApplicationAction open;
 	public final ApplicationAction exit = new ExitAction();
     
-	/* Background menu */
-	public final JMenu backgroundMenu = new JMenu("Background");
-	public final JMenu googleMenu = new JMenu("Google");
-	public final ApplicationAction backgroundAction_google_satellite;
-	public final ApplicationAction backgroundAction_google_street;
-	public final JMenu openstreetmapMenu = new JMenu("OpenStreetMap");
-	public final ApplicationAction backgroundAction_osm_mapnik;
-	public final ApplicationAction backgroundAction_osm_tilesAtHome;
-	public final ApplicationAction backgroundAction_osm_cycle;
+	/* Map menu */
+	public final JMenu mapMenu = new JMenu("Map");
+//	TODO: cleanup
+//	public final JMenu googleMenu = new JMenu("Google");
+//	public final ApplicationAction backgroundAction_google_satellite;
+//	public final ApplicationAction backgroundAction_google_street;
+	public final JMenu sourceMenu = new JMenu("Source");
+	public final ApplicationAction changeMapSourceAction_osm_mapnik;
+	public final ApplicationAction changeMapSourceAction_osm_tilesAtHome;
+	public final ApplicationAction changeMapSourceAction_osm_cycle;
 	
 	/* Help menu */
 	public final JMenu helpMenu = new JMenu("Help");
@@ -42,11 +43,12 @@ public class MainMenuBar extends JMenuBar
 	{
 		open = new OpenAction(mainWindow.getMapComponent());
 		
-		backgroundAction_google_satellite = new BackgroundAction(MapProvider.getMapSource(Map.GOOGLE_SATELLITE), mainWindow.getMapComponent());
-		backgroundAction_google_street = new BackgroundAction(MapProvider.getMapSource(Map.GOOGLE_STREET), mainWindow.getMapComponent());
-		backgroundAction_osm_mapnik = new BackgroundAction(MapProvider.getMapSource(Map.OPENSTREETMAP_MAPNIK), mainWindow.getMapComponent());
-		backgroundAction_osm_tilesAtHome = new BackgroundAction(MapProvider.getMapSource(Map.OPENSTREETMAP_TILESATHOME), mainWindow.getMapComponent());
-		backgroundAction_osm_cycle = new BackgroundAction(MapProvider.getMapSource(Map.OPENSTREETMAP_CYCLE), mainWindow.getMapComponent());
+//		TODO: cleanup
+//		backgroundAction_google_satellite = new BackgroundAction(MapProvider.getMapSource(Map.GOOGLE_SATELLITE), mainWindow.getMapComponent());
+//		backgroundAction_google_street = new BackgroundAction(MapProvider.getMapSource(Map.GOOGLE_STREET), mainWindow.getMapComponent());
+		changeMapSourceAction_osm_mapnik = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_MAPNIK), mainWindow.getMapComponent());
+		changeMapSourceAction_osm_tilesAtHome = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_TILESATHOME), mainWindow.getMapComponent());
+		changeMapSourceAction_osm_cycle = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_CYCLE), mainWindow.getMapComponent());
 		
         JMenuItem current;
         
@@ -58,15 +60,17 @@ public class MainMenuBar extends JMenuBar
 		current.setAccelerator(exit.shortCut);
 		add(fileMenu);
 		
-		backgroundMenu.setMnemonic('B');
-		backgroundMenu.add(googleMenu);
-		googleMenu.add(backgroundAction_google_satellite);
-		googleMenu.add(backgroundAction_google_street);
-		backgroundMenu.add(openstreetmapMenu);
-		openstreetmapMenu.add(backgroundAction_osm_mapnik);
-		openstreetmapMenu.add(backgroundAction_osm_tilesAtHome);
-		openstreetmapMenu.add(backgroundAction_osm_cycle);
-		add(backgroundMenu);
+		mapMenu.setMnemonic('M');
+//		TODO: cleanup
+//		mapMenu.add(googleMenu);
+//		googleMenu.add(backgroundAction_google_satellite);
+//		googleMenu.add(backgroundAction_google_street);
+		mapMenu.addSeparator();
+		mapMenu.add(sourceMenu);
+		sourceMenu.add(changeMapSourceAction_osm_mapnik);
+		sourceMenu.add(changeMapSourceAction_osm_tilesAtHome);
+		sourceMenu.add(changeMapSourceAction_osm_cycle);
+		add(mapMenu);
 		
 		helpMenu.setMnemonic('H');
 		current = helpMenu.add(about);
