@@ -11,6 +11,7 @@ import actions.AboutAction;
 import actions.ApplicationAction;
 import actions.ChangeMapSourceAction;
 import actions.ExitAction;
+import actions.GoToCoordinateAction;
 import actions.OpenAction;
 
 public class MainMenuBar extends JMenuBar
@@ -29,6 +30,7 @@ public class MainMenuBar extends JMenuBar
 //	public final ApplicationAction backgroundAction_google_satellite;
 //	public final ApplicationAction backgroundAction_google_street;
 	public final JMenu sourceMenu = new JMenu("Source");
+	public final ApplicationAction gotoCoordinateAction; 
 	public final ApplicationAction changeMapSourceAction_osm_mapnik;
 	public final ApplicationAction changeMapSourceAction_osm_tilesAtHome;
 	public final ApplicationAction changeMapSourceAction_osm_cycle;
@@ -46,6 +48,7 @@ public class MainMenuBar extends JMenuBar
 //		TODO: cleanup
 //		backgroundAction_google_satellite = new BackgroundAction(MapProvider.getMapSource(Map.GOOGLE_SATELLITE), mainWindow.getMapComponent());
 //		backgroundAction_google_street = new BackgroundAction(MapProvider.getMapSource(Map.GOOGLE_STREET), mainWindow.getMapComponent());
+		gotoCoordinateAction = new GoToCoordinateAction(mainWindow.getMapComponent());
 		changeMapSourceAction_osm_mapnik = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_MAPNIK), mainWindow.getMapComponent());
 		changeMapSourceAction_osm_tilesAtHome = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_TILESATHOME), mainWindow.getMapComponent());
 		changeMapSourceAction_osm_cycle = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_CYCLE), mainWindow.getMapComponent());
@@ -65,6 +68,7 @@ public class MainMenuBar extends JMenuBar
 //		mapMenu.add(googleMenu);
 //		googleMenu.add(backgroundAction_google_satellite);
 //		googleMenu.add(backgroundAction_google_street);
+		mapMenu.add(gotoCoordinateAction);
 		mapMenu.addSeparator();
 		mapMenu.add(sourceMenu);
 		sourceMenu.add(changeMapSourceAction_osm_mapnik);
