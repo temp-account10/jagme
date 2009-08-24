@@ -76,4 +76,12 @@ public class MapComponent extends JXMapViewer
 		setOverlayPainter(compoundPainter);
 	}
 	
+	public void removeOverlayPainter(Painter<JXMapViewer> painter)
+	{
+		overlayPainters.remove(painter);
+		
+		compoundPainter.setPainters(overlayPainters.toArray(new Painter[overlayPainters.size()]));
+		compoundPainter.setCacheable(false);
+		setOverlayPainter(compoundPainter);
+	}
 }
