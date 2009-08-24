@@ -24,7 +24,9 @@ public class GoToCoordinateAction extends ApplicationAction
 	public void actionPerformed(ActionEvent e)
 	{
 		GotoCoordinateDialog dialog = new GotoCoordinateDialog();
+		dialog.setGeoPosition(mapComponent.getCenterPosition());
 		dialog.show();
+		
 		mapComponent.setCenterPosition(new GeoPosition(47.22521, 8.98941));
 	}
 
