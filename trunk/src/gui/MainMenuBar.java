@@ -68,7 +68,9 @@ public class MainMenuBar extends JMenuBar
 //		mapMenu.add(googleMenu);
 //		googleMenu.add(backgroundAction_google_satellite);
 //		googleMenu.add(backgroundAction_google_street);
-		mapMenu.add(gotoCoordinateAction);
+		current = mapMenu.add(gotoCoordinateAction);
+		current.setAccelerator(gotoCoordinateAction.shortCut);
+		
 		mapMenu.addSeparator();
 		mapMenu.add(sourceMenu);
 		sourceMenu.add(changeMapSourceAction_osm_mapnik);
