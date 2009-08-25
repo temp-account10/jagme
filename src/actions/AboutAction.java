@@ -17,7 +17,7 @@ public class AboutAction extends ApplicationAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		JOptionPane.showMessageDialog( null, "About..." );
+		JOptionPane.showMessageDialog(null, "Jagme 0.0.2\n\nJagme helps runners, mountain-bikers,\nhikers, geocachers and world explorers\nto plan and analyze trips.", "About Jagme", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 }

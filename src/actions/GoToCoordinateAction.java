@@ -6,8 +6,6 @@ import gui.MapComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import org.jdesktop.swingx.mapviewer.GeoPosition;
-
 public class GoToCoordinateAction extends ApplicationAction
 {
 	private static final long serialVersionUID = 1L;
@@ -15,7 +13,7 @@ public class GoToCoordinateAction extends ApplicationAction
 	
 	public GoToCoordinateAction(MapComponent mapComponent)
 	{
-		super("Goto coordinate...", null, KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK);
+		super("Goto coordinate...", null, KeyEvent.VK_G, 0);
 		
 		this.mapComponent = mapComponent;
 	}
@@ -25,9 +23,10 @@ public class GoToCoordinateAction extends ApplicationAction
 	{
 		GotoCoordinateDialog dialog = new GotoCoordinateDialog();
 		dialog.setGeoPosition(mapComponent.getCenterPosition());
-		dialog.show();
-		
-		mapComponent.setCenterPosition(new GeoPosition(47.22521, 8.98941));
+		if(dialog.show() == GotoCoordinateDialog.OK)
+		{
+			mapComponent.setCenterPosition(dialog.getGeoPosition());
+		}
 	}
 
 }
