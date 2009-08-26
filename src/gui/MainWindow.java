@@ -1,11 +1,13 @@
 package gui;
 
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 
 public class MainWindow
 {
 	private JFrame frame;
-	private MapComponent mapComponent = new MapComponent();;
+	private MapComponent mapComponent = new MapComponent();
+	private SearchComponent searchComponent = new SearchComponent();
 	
 	public MainWindow()
 	{
@@ -21,7 +23,10 @@ public class MainWindow
 	    MainMenuBar mainMenuBar = new MainMenuBar(this);
 	    frame.setJMenuBar(mainMenuBar);
 	    
-	    frame.add(mapComponent);
+	    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, searchComponent, mapComponent);
+	    splitPane.setOneTouchExpandable(true);
+	    splitPane.setDividerLocation(200);
+	    frame.add(splitPane);
 	}
 	
 	public MapComponent getMapComponent()
