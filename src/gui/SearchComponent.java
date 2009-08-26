@@ -3,26 +3,41 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.geonames.Toponym;
+import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import tools.ImageProvider;
 import actions.SearchAction;
 
 public class SearchComponent extends JPanel
 {
+	private static final long serialVersionUID = 1L;
 	public static enum Status { READY, SEARCHING }
 	
-	private static final long serialVersionUID = 1L;
-	JTextField textField;
-	JButton searchButton;
-
-	public SearchComponent()
+	private MapComponent mapComponent;
+	
+	private JTextField textField;
+	private JButton searchButton;
+	private JList list;
+	private DefaultListModel listModel;
+	
+	public SearchComponent(MapComponent mapComponent)
 	{
+		this.mapComponent = mapComponent;
+		
 		initializeComponents();
 	}
 	
@@ -38,8 +53,30 @@ public class SearchComponent extends JPanel
 		searchButton.setToolTipText("Initiate search for the given string");
 		searchButton.addActionListener(searchAction);
 		
-		String[] listData = { "Shinguz", "Glapum'tianer", "Suffus", "Zypanon", "Tschung" }; 
-		JList list = new JList(listData);
+		listModel = new DefaultListModel();
+		list = new JList(listModel);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setCellRenderer(new ToponymListCellRenderer());
+		list.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// check for a real selection (user selected an entry
+				// and released the mouse button)
+				if(e.getValueIsAdjusting())
+				{
+					return;
+				}
+				
+				Object selectedObject = list.getSelectedValue();
+				if(selectedObject instanceof Toponym)
+				{
+					Toponym selectedToponym = (Toponym)selectedObject;
+					GeoPosition geoPosition = new GeoPosition(selectedToponym.getLatitude(), selectedToponym.getLongitude());
+					mapComponent.setCenterPosition(geoPosition);
+				}
+			}
+		});
 		
 		JPanel searchPanel = new JPanel(new FlowLayout());
 		searchPanel.add(textField);
@@ -47,7 +84,7 @@ public class SearchComponent extends JPanel
 		
 		this.setLayout(new BorderLayout());
 		this.add(searchPanel, BorderLayout.NORTH);
-		this.add(list, BorderLayout.CENTER);
+		this.add(new JScrollPane(list), BorderLayout.CENTER);
 	}
 	
 	public String getSearchString()
@@ -62,13 +99,25 @@ public class SearchComponent extends JPanel
 			case READY:
 				textField.setEnabled(true);
 				searchButton.setEnabled(true);
+				list.setEnabled(true);
 				break;
 			case SEARCHING:
 				textField.setEnabled(false);
 				searchButton.setEnabled(false);
+				list.setEnabled(false);
 				break;
 			default:
 				throw new RuntimeException("Unsupported search status!");
+		}
+	}
+	
+	public void setListData(List<Toponym> list)
+	{
+		listModel.removeAllElements();
+		
+		for (Toponym toponym : list)
+		{
+			listModel.addElement(toponym);
 		}
 	}
 }
