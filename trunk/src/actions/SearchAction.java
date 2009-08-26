@@ -4,7 +4,6 @@ import gui.SearchComponent;
 
 import java.awt.event.ActionEvent;
 
-import org.geonames.Toponym;
 import org.geonames.ToponymSearchCriteria;
 import org.geonames.ToponymSearchResult;
 import org.geonames.WebService;
@@ -42,11 +41,8 @@ public class SearchAction extends ApplicationAction
 				e1.printStackTrace();
 			}
 			
-			for (Toponym toponym : searchResult.getToponyms())
-			{
-				System.out.println(toponym.getName()+" "+ toponym.getCountryName());
-			}
-			System.out.println("_-------------------------------");
+			searchComponent.setListData(searchResult.getToponyms());
+			
 			searchComponent.setStatus(SearchComponent.Status.READY);
 		}
 	}

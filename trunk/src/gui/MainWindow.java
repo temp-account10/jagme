@@ -7,7 +7,7 @@ public class MainWindow
 {
 	private JFrame frame;
 	private MapComponent mapComponent = new MapComponent();
-	private SearchComponent searchComponent = new SearchComponent();
+	private SearchComponent searchComponent = new SearchComponent(mapComponent);
 	
 	public MainWindow()
 	{

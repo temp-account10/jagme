@@ -23,9 +23,8 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 public class GotoCoordinateDialog
 {
-	public final static int OK = 0;
-	public final static int CANCEL = 1;
-	private int selectedValue;
+	public static enum Status { OK, CANCEL }
+	private Status selectedValue;
 	
 	private JDialog dialog;
 	private JTextField decLatitudeTextField;
@@ -135,7 +134,7 @@ public class GotoCoordinateDialog
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selectedValue = OK;
+				selectedValue = Status.OK;
 				dialog.setVisible(false);
 			}
 		});
@@ -145,7 +144,7 @@ public class GotoCoordinateDialog
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selectedValue = CANCEL;
+				selectedValue = Status.CANCEL;
 				dialog.setVisible(false);
 			}
 		});
@@ -176,7 +175,7 @@ public class GotoCoordinateDialog
 		return geoPosition;
 	}
 	
-	public int show()
+	public Status show()
 	{
 		dialog.setVisible(true);
 		dialog.dispose();

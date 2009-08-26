@@ -23,7 +23,7 @@ public class GoToCoordinateAction extends ApplicationAction
 	{
 		GotoCoordinateDialog dialog = new GotoCoordinateDialog();
 		dialog.setGeoPosition(mapComponent.getCenterPosition());
-		if(dialog.show() == GotoCoordinateDialog.OK)
+		if(dialog.show() == GotoCoordinateDialog.Status.OK)
 		{
 			mapComponent.setCenterPosition(dialog.getGeoPosition());
 		}
