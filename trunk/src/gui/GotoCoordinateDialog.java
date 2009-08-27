@@ -8,15 +8,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.text.MaskFormatter;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
@@ -39,6 +43,7 @@ public class GotoCoordinateDialog
 	public GotoCoordinateDialog()
 	{
 		initializeComponents();
+		initCloseListener();
 	}
 	
 	private void initializeComponents()
@@ -182,6 +187,19 @@ public class GotoCoordinateDialog
 		return selectedValue;
 	}
 	
+	private void initCloseListener()
+	{
+		dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
+		dialog.getRootPane().getActionMap().put("close", new AbstractAction()
+		{
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
+				dialog.setVisible(false);
+			}
+		});
+	}
+
 	private String getFormattedCoordinateText(double coordinate, boolean isLatitudeCoordinate)
 	{
 		int degree = getDegreeOfDecimalCoordinate(Math.abs(coordinate));
