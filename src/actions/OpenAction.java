@@ -48,8 +48,6 @@ public class OpenAction extends ApplicationAction
 				reader = new GPXReader(file);
 				GPXData data = reader.getGPXDataObject();
 				mapComponent.addOverlayPainter(new GPXPainter(data).getPainter());
-				// TODO: Remove debug information
-				System.out.println(data.toString());
 				
 				Bounds bounds = data.getBounds();
 				LatLon center = bounds.getCenter();
@@ -64,6 +62,7 @@ public class OpenAction extends ApplicationAction
 			catch (ReadException exception)
 			{
 				JOptionPane.showMessageDialog(null, exception.getMessage(), "Read error", JOptionPane.ERROR_MESSAGE);
+				mapComponent.removeOverlayPainter(infoTextOverlay);
 			}
 			return null;
 		}
