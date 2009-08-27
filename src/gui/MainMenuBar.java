@@ -1,9 +1,12 @@
 package gui;
 // License: GPL. See LICENSE file for details.
 
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
+import tools.ImageProvider;
 
 import maps.MapProvider;
 import maps.Maps.Map;
@@ -13,6 +16,7 @@ import actions.ChangeMapSourceAction;
 import actions.ExitAction;
 import actions.GoToCoordinateAction;
 import actions.OpenAction;
+import actions.SaveMapExtract;
 
 public class MainMenuBar extends JMenuBar
 {
@@ -21,6 +25,7 @@ public class MainMenuBar extends JMenuBar
 	/* File menu */
 	public final JMenu fileMenu = new JMenu("File");
 	public final ApplicationAction open;
+	public final ApplicationAction saveMapExtract;
 	public final ApplicationAction exit = new ExitAction();
     
 	/* Map menu */
@@ -44,6 +49,7 @@ public class MainMenuBar extends JMenuBar
 	public MainMenuBar(MainWindow mainWindow)
 	{
 		open = new OpenAction(mainWindow.getMapComponent());
+		saveMapExtract = new SaveMapExtract(mainWindow.getMapComponent());
 		
 //		TODO: cleanup
 //		backgroundAction_google_satellite = new BackgroundAction(MapProvider.getMapSource(Map.GOOGLE_SATELLITE), mainWindow.getMapComponent());
@@ -59,6 +65,9 @@ public class MainMenuBar extends JMenuBar
 		current = fileMenu.add(open);
 		current.setAccelerator(open.shortCut);
 		fileMenu.addSeparator();
+		current = fileMenu.add(saveMapExtract);
+		current.setAccelerator(saveMapExtract.shortCut);
+		fileMenu.addSeparator();
 		current = fileMenu.add(exit);
 		current.setAccelerator(exit.shortCut);
 		add(fileMenu);
@@ -72,6 +81,7 @@ public class MainMenuBar extends JMenuBar
 		current.setAccelerator(gotoCoordinateAction.shortCut);
 		
 		mapMenu.addSeparator();
+		sourceMenu.setIcon(new ImageIcon(ImageProvider.getImage("map_source")));
 		mapMenu.add(sourceMenu);
 		sourceMenu.add(changeMapSourceAction_osm_mapnik);
 		sourceMenu.add(changeMapSourceAction_osm_tilesAtHome);
