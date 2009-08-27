@@ -74,6 +74,10 @@ public class SearchComponent extends JPanel
 					Toponym selectedToponym = (Toponym)selectedObject;
 					GeoPosition geoPosition = new GeoPosition(selectedToponym.getLatitude(), selectedToponym.getLongitude());
 					mapComponent.setCenterPosition(geoPosition);
+					
+					// zoom in
+					int minZoomeLevel = mapComponent.getTileFactory().getInfo().getMinimumZoomLevel();
+					mapComponent.setZoom(minZoomeLevel);
 				}
 			}
 		});

@@ -4,6 +4,8 @@ import gui.SearchComponent;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
 import org.geonames.ToponymSearchCriteria;
 import org.geonames.ToponymSearchResult;
 import org.geonames.WebService;
@@ -41,8 +43,16 @@ public class SearchAction extends ApplicationAction
 				e1.printStackTrace();
 			}
 			
-			searchComponent.setListData(searchResult.getToponyms());
-			
+			// check if there are any results
+			if(searchResult.getTotalResultsCount() > 0)
+			{
+				searchComponent.setListData(searchResult.getToponyms());
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Your search for \"" + searchString + "\" returned no results.\nPlease try a different term.", "No results", JOptionPane.WARNING_MESSAGE);
+			}
+
 			searchComponent.setStatus(SearchComponent.Status.READY);
 		}
 	}
