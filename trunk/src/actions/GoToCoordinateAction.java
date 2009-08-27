@@ -13,7 +13,7 @@ public class GoToCoordinateAction extends ApplicationAction
 	
 	public GoToCoordinateAction(MapComponent mapComponent)
 	{
-		super("Goto coordinate...", null, KeyEvent.VK_G, 0);
+		super("Goto coordinate...", null, KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK);
 		
 		this.mapComponent = mapComponent;
 	}
