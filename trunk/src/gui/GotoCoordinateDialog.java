@@ -25,6 +25,9 @@ import javax.swing.text.MaskFormatter;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
+import tools.CoordinateUtilities;
+import tools.ImageProvider;
+
 public class GotoCoordinateDialog
 {
 	public static enum Status { OK, CANCEL }
@@ -54,6 +57,7 @@ public class GotoCoordinateDialog
 		dialog.setTitle("Goto coordinate");
 		dialog.setModal(true);
 		dialog.setSize(290, 160);
+		dialog.setIconImage(ImageProvider.getImage("jagme"));
 		
 		// position dialog in the center of the screen
 		Dimension bounds = Toolkit.getDefaultToolkit().getScreenSize();
@@ -202,9 +206,9 @@ public class GotoCoordinateDialog
 
 	private String getFormattedCoordinateText(double coordinate, boolean isLatitudeCoordinate)
 	{
-		int degree = getDegreeOfDecimalCoordinate(Math.abs(coordinate));
-		int minutes = getMinutesOfDecimalCoordinate(Math.abs(coordinate));
-		double seconds = getSecondsOfDecimalCoordinate(Math.abs(coordinate));
+		int degree = CoordinateUtilities.getDegreeOfDecimalCoordinate(Math.abs(coordinate));
+		int minutes = CoordinateUtilities.getMinutesOfDecimalCoordinate(Math.abs(coordinate));
+		double seconds = CoordinateUtilities.getSecondsOfDecimalCoordinate(Math.abs(coordinate));
 		int intSeconds = (int)(seconds * 10000.0);
 		
 		String direction = "";
@@ -259,52 +263,5 @@ public class GotoCoordinateDialog
 		}
 		
 		return direction;
-	}
-	
-	private int getDegreeOfDecimalCoordinate(double coordinate)
-	{
-		return getWhole(coordinate);
-	}
-	
-	private int getMinutesOfDecimalCoordinate(double coordinate)
-	{
-		return getWhole(getFraction(coordinate) * 60);
-	}
-	
-	private double getSecondsOfDecimalCoordinate(double coordinate)
-	{
-		return getFraction(getFraction(coordinate) * 60) * 60;
-	}
-	
-	private int getWhole(double value)
-	{
-		int result = 0;
-		
-		if(value >= 0)
-		{
-			result = (int)(Math.floor(value));
-		}
-		else if(value < 0)
-		{
-			result = (int)(Math.ceil(value));
-		}
-		
-		return result;
-	}
-	
-	private double getFraction(double value)
-	{
-		double result = 0.0;
-		
-		if(value >= 0)
-		{
-			result = value - Math.floor(value);
-		}
-		else if(value < 0)
-		{
-			result = value - Math.ceil(value);
-		}
-		
-		return result;	
 	}
 }
