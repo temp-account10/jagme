@@ -22,7 +22,11 @@ public class GoToCoordinateAction extends ApplicationAction
 	public void actionPerformed(ActionEvent e)
 	{
 		GotoCoordinateDialog dialog = new GotoCoordinateDialog();
+		
+		// set current position as the base for the user input
 		dialog.setGeoPosition(mapComponent.getCenterPosition());
+		
+		// if the user pressed ok, jump to the given position
 		if(dialog.show() == GotoCoordinateDialog.Status.OK)
 		{
 			mapComponent.setCenterPosition(dialog.getGeoPosition());
