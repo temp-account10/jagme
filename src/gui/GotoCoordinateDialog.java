@@ -31,7 +31,9 @@ import tools.ImageProvider;
 public class GotoCoordinateDialog
 {
 	public static enum Status { OK, CANCEL }
+	
 	private Status selectedValue;
+	private GeoPosition geoPosition;
 	
 	private JDialog dialog;
 	private JTextField decLatitudeTextField;
@@ -40,8 +42,6 @@ public class GotoCoordinateDialog
 	private JFormattedTextField degLongitudeTextField;
 	private JButton okButton;
 	private JButton cancelButton;
-	
-	private GeoPosition geoPosition;
 	
 	public GotoCoordinateDialog()
 	{
@@ -53,10 +53,10 @@ public class GotoCoordinateDialog
 	{
 		dialog = new JDialog();
 		
-		// define basic settings
+		// define basic dialog settings
 		dialog.setTitle("Goto coordinate");
 		dialog.setModal(true);
-		dialog.setSize(290, 160);
+		dialog.setSize(300, 160);
 		dialog.setIconImage(ImageProvider.getImage("jagme"));
 		
 		// position dialog in the center of the screen
@@ -74,36 +74,12 @@ public class GotoCoordinateDialog
 		
 		tabOnePanel.add(new JLabel("Latitude:"));
 		decLatitudeTextField = new JTextField();
-		decLatitudeTextField.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				geoPosition = new GeoPosition(new Double(decLatitudeTextField.getText()), geoPosition.getLongitude());
-				updateUI();
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		decLatitudeTextField.addFocusListener(focusListener);
 		tabOnePanel.add(decLatitudeTextField);
 		
 		tabOnePanel.add(new JLabel("Longitude:"));
 		decLongitudeTextField = new JTextField();
-		decLongitudeTextField.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				geoPosition = new GeoPosition(geoPosition.getLatitude(), new Double(decLongitudeTextField.getText()));
-				updateUI();
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		decLongitudeTextField.addFocusListener(focusListener);
 		tabOnePanel.add(decLongitudeTextField);
 		
 		// tab "Deg/Min/Sec"
@@ -112,24 +88,29 @@ public class GotoCoordinateDialog
 		
 		MaskFormatter latDegMinSecFormatter = null;
 		MaskFormatter lonDegMinSecFormatter = null;
-		try {
+		try
+		{
 			latDegMinSecFormatter = new MaskFormatter("##'°##''##'.####'''' U");
 			latDegMinSecFormatter.setValidCharacters("0123456789NS");
 			
 			lonDegMinSecFormatter = new MaskFormatter("##'°##''##'.####'''' U");
 			lonDegMinSecFormatter.setValidCharacters("0123456789EW");
-		} catch (ParseException e) {
+		}
+		catch (ParseException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new RuntimeException();
 		}
 		
 		tabTwoPanel.add(new JLabel("Latitude:"));
 		degLatitudeTextField = new JFormattedTextField(latDegMinSecFormatter);
-		
+		degLatitudeTextField.addFocusListener(focusListener);
 		tabTwoPanel.add(degLatitudeTextField);
 		
 		tabTwoPanel.add(new JLabel("Longitude:"));
 		degLongitudeTextField = new JFormattedTextField(lonDegMinSecFormatter);
+		degLongitudeTextField.addFocusListener(focusListener);
 		tabTwoPanel.add(degLongitudeTextField);
 		
 		// create TabbedPane and add tabs
@@ -140,23 +121,11 @@ public class GotoCoordinateDialog
 		// button panel
 		JPanel buttonPanel = new JPanel();
 		okButton = new JButton("OK");
-		okButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				selectedValue = Status.OK;
-				dialog.setVisible(false);
-			}
-		});
+		okButton.addActionListener(buttonActionListener);
 		buttonPanel.add(okButton);
 		
 		cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				selectedValue = Status.CANCEL;
-				dialog.setVisible(false);
-			}
-		});
+		cancelButton.addActionListener(buttonActionListener);
 		buttonPanel.add(cancelButton);
 		
 		// add panels to dialog
@@ -198,7 +167,8 @@ public class GotoCoordinateDialog
 		{
 			private static final long serialVersionUID = 1L;
 
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				dialog.setVisible(false);
 			}
 		});
@@ -214,54 +184,76 @@ public class GotoCoordinateDialog
 		String direction = "";
 		
 		if(isLatitudeCoordinate) {
-			direction = getDirectionOfLatitudeCoordinate(coordinate);
+			direction = CoordinateUtilities.getDirectionOfLatitudeCoordinate(coordinate);
 		}
 		else {
-			direction = getDirectionOfLongitudeCoordinate(coordinate);
+			direction = CoordinateUtilities.getDirectionOfLongitudeCoordinate(coordinate);
 		}
 		
 		return String.format("%02d%02d%06d%s", degree, minutes, intSeconds, direction);		
 	}
 	
-	private String getDirectionOfLatitudeCoordinate(double coordinate)
+	private FocusListener focusListener = new FocusListener()
 	{
-		String direction = "";
+		@Override
+		public void focusLost(FocusEvent e) {
+			Object source = e.getSource();
+
+			double latitude = geoPosition.getLatitude();
+			double longitude = geoPosition.getLongitude();
+			
+			if(source == decLatitudeTextField)
+			{
+				latitude = new Double(decLatitudeTextField.getText());
+			}
+			else if(source == decLongitudeTextField)
+			{
+				longitude = new Double(decLongitudeTextField.getText());
+			}
+			else if(source == degLatitudeTextField)
+			{
+				latitude = CoordinateUtilities.getDecimalCoordinateOfDegMinSec(degLatitudeTextField.getText());
+			}
+			else if(source == degLongitudeTextField)
+			{
+				longitude = CoordinateUtilities.getDecimalCoordinateOfDegMinSec(degLongitudeTextField.getText());
+			}
+			else
+			{
+				// TODO
+				throw new RuntimeException();
+			}
+			
+			geoPosition = new GeoPosition(latitude, longitude);
+			updateUI();
+		}
 		
-		if(coordinate > 0)
-		{
-			direction = "N";
-		}
-		else if(coordinate < 0)
-		{
-			direction = "S";
-		}
-		else
-		{
-			// TODO not really good: should be nothing
-			direction = "N";
-		}
-		
-		return direction;
-	}
+		@Override
+		public void focusGained(FocusEvent e) { }
+	};
 	
-	private String getDirectionOfLongitudeCoordinate(double coordinate)
+	private ActionListener buttonActionListener = new ActionListener()
 	{
-		String direction = "";
-		
-		if(coordinate > 0)
+		@Override
+		public void actionPerformed(ActionEvent e)
 		{
-			direction = "E";
+			Object source = e.getSource();
+			
+			if(source == okButton)
+			{
+				selectedValue = Status.OK;
+			}
+			else if(source == cancelButton)
+			{
+				selectedValue = Status.CANCEL;
+			}
+			else
+			{
+				// TODO
+				throw new RuntimeException();
+			}
+			
+			dialog.setVisible(false);
 		}
-		else if(coordinate < 0)
-		{
-			direction = "W";
-		}
-		else
-		{
-			// TODO not really good: should be nothing
-			direction = "E";
-		}
-		
-		return direction;
-	}
+	};
 }
