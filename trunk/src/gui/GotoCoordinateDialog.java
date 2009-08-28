@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.text.ParseException;
 
 import javax.swing.AbstractAction;
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -74,11 +75,13 @@ public class GotoCoordinateDialog
 		
 		tabOnePanel.add(new JLabel("Latitude:"));
 		decLatitudeTextField = new JTextField();
+		decLatitudeTextField.setInputVerifier(decimalCoordinateInputVerifier);
 		decLatitudeTextField.addFocusListener(focusListener);
 		tabOnePanel.add(decLatitudeTextField);
 		
 		tabOnePanel.add(new JLabel("Longitude:"));
 		decLongitudeTextField = new JTextField();
+		decLongitudeTextField.setInputVerifier(decimalCoordinateInputVerifier);
 		decLongitudeTextField.addFocusListener(focusListener);
 		tabOnePanel.add(decLongitudeTextField);
 		
@@ -183,15 +186,90 @@ public class GotoCoordinateDialog
 		
 		String direction = "";
 		
-		if(isLatitudeCoordinate) {
+		if(isLatitudeCoordinate)
+		{
 			direction = CoordinateUtilities.getDirectionOfLatitudeCoordinate(coordinate);
 		}
-		else {
+		else
+		{
 			direction = CoordinateUtilities.getDirectionOfLongitudeCoordinate(coordinate);
 		}
 		
 		return String.format("%02d%02d%06d%s", degree, minutes, intSeconds, direction);		
 	}
+	
+	private InputVerifier decimalCoordinateInputVerifier = new InputVerifier()
+	{
+		@Override
+		public boolean verify(JComponent input)
+		{
+			String text;
+
+			if(input instanceof JTextField)
+			{
+				text = ((JTextField) input).getText();
+			}
+			else
+			{
+				// TODO
+				throw new RuntimeException();
+			}
+			
+			// ensure value is in double format
+			Double value;
+			
+			try
+			{
+				value = new Double(text);
+			}
+			catch(NumberFormatException nfe)
+			{
+				return false;
+			}
+			
+			if(input == decLatitudeTextField)
+			{
+				if( (value < -90.0) || (value > 90.0) )
+				{
+					return false;
+				}
+			}
+			else if (input == decLongitudeTextField)
+			{
+				if( (value < -180.0) || (value > 180.0) )
+				{
+					return false;
+				}
+			}
+			else
+			{
+				// TODO
+				throw new RuntimeException();
+			}
+
+			return true;
+		}
+		
+		@Override
+		public boolean shouldYieldFocus(JComponent input)
+		{
+			// if user input is invalid, insert old value into the field
+			if (!verify(input))
+			{
+				if(input == decLatitudeTextField)
+				{
+					decLatitudeTextField.setText(new Double(geoPosition.getLatitude()).toString());
+				}
+				else if (input == decLongitudeTextField)
+				{
+					decLongitudeTextField.setText(new Double(geoPosition.getLongitude()).toString());
+				}
+			}
+			
+			return true;
+	    }
+
+	};
 	
 	private FocusListener focusListener = new FocusListener()
 	{
