@@ -18,6 +18,8 @@ import tools.ImageProvider;
 
 public class MapComponent extends JXMapViewer
 {
+	public final int STATUS_BAR_HEIGHT = 25;
+	
 	private static final long serialVersionUID = 1L;
 	private double currentLatitude;
 	private double currentLongitude;
@@ -37,17 +39,17 @@ public class MapComponent extends JXMapViewer
 		
         setLoadingImage(ImageProvider.getImage("clock"));
         
-        Painter<JXMapViewer> textOverlay = new Painter<JXMapViewer>()
+        Painter<JXMapViewer> statusTextOverlay = new Painter<JXMapViewer>()
 		{
 		    public void paint(Graphics2D g, JXMapViewer map, int w, int h) {
 		        g.setPaint(new Color(0,0,0,180));
-		        g.fillRect(0, getSize().height-25, getSize().width, 25);
+		        g.fillRect(0, getSize().height-STATUS_BAR_HEIGHT, getSize().width, STATUS_BAR_HEIGHT);
 		        g.setPaint(Color.WHITE);
 		        g.drawString(String.format("Latitude: %f  Longitude: %f", currentLatitude, currentLongitude), 10, getSize().height-8);
 		    }
 		};
 		
-		addOverlayPainter(textOverlay);
+		addOverlayPainter(statusTextOverlay);
 		
 		
 		this.addMouseMotionListener(new MouseMotionListener()

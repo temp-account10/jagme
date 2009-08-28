@@ -75,7 +75,7 @@ public class SaveMapExtract extends ApplicationAction
 			}
 			
 			Point componentLocation = mapComponent.getLocationOnScreen();
-			Dimension dimension = new Dimension(mapComponent.getWidth(), mapComponent.getHeight());
+			Dimension dimension = new Dimension(mapComponent.getWidth(), mapComponent.getHeight() - mapComponent.STATUS_BAR_HEIGHT);
 			Rectangle rectangle = new Rectangle(componentLocation, dimension);
 			BufferedImage image = robot.createScreenCapture(rectangle);
 			
