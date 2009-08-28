@@ -3,7 +3,10 @@ package actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
+import tools.ImageProvider;
 
 public class AboutAction extends ApplicationAction
 {
@@ -17,7 +20,7 @@ public class AboutAction extends ApplicationAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		JOptionPane.showMessageDialog(null, "Jagme 0.0.2\n\nJagme helps runners, mountain-bikers,\nhikers, geocachers and world explorers\nto plan and analyze trips.", "About Jagme", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Jagme 0.0.2\n\nJagme helps runners, mountain-bikers,\nhikers, geocachers and world explorers\nto plan and analyze trips.", "About Jagme", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(ImageProvider.getImage("jagme")));
 	}
 
 }

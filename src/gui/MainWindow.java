@@ -3,6 +3,8 @@ package gui;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
+import tools.ImageProvider;
+
 public class MainWindow
 {
 	private JFrame frame;
@@ -19,6 +21,7 @@ public class MainWindow
 		frame = new JFrame("Jagme"); 
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 	    frame.setSize(800, 600);
+	    frame.setIconImage(ImageProvider.getImage("jagme"));
 	    
 	    MainMenuBar mainMenuBar = new MainMenuBar(this);
 	    frame.setJMenuBar(mainMenuBar);
