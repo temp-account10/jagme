@@ -190,10 +190,12 @@ public class GPXReader
 		{
 			if(e.getMessage() != null)
 			{
+				//TODO i18n
 				throw new ReadException(String.format("Error while parsing line number %s:\n%s", parser.getLocation().getLineNumber(), e.getMessage()));				
 			}
 			else
 			{
+				//TODO i18n
 				throw new ReadException(String.format("Error while parsing line number %s", parser.getLocation().getLineNumber()));
 			}
 		}

@@ -1,15 +1,15 @@
 package gui;
-// License: GPL. See LICENSE file for details.
+
+import i18n.I18NHelper;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import tools.ImageProvider;
-
 import maps.MapProvider;
 import maps.Maps.Map;
+import tools.ImageProvider;
 import actions.AboutAction;
 import actions.ApplicationAction;
 import actions.ChangeMapSourceAction;
@@ -20,50 +20,30 @@ import actions.SaveMapExtract;
 
 public class MainMenuBar extends JMenuBar
 {
-	private static final long serialVersionUID = 1L;
-
-	/* File menu */
-	public final JMenu fileMenu = new JMenu("File");
-	public final ApplicationAction open;
-	public final ApplicationAction saveMapExtract;
-	public final ApplicationAction exit = new ExitAction();
-    
-	/* Map menu */
-	public final JMenu mapMenu = new JMenu("Map");
-//	TODO: cleanup
-//	public final JMenu googleMenu = new JMenu("Google");
-//	public final ApplicationAction backgroundAction_google_satellite;
-//	public final ApplicationAction backgroundAction_google_street;
-	public final JMenu sourceMenu = new JMenu("Source");
-	public final ApplicationAction gotoCoordinateAction; 
-	public final ApplicationAction changeMapSourceAction_osm_mapnik;
-	public final ApplicationAction changeMapSourceAction_osm_tilesAtHome;
-	public final ApplicationAction changeMapSourceAction_osm_cycle;
-	
-	/* Help menu */
-	public final JMenu helpMenu = new JMenu("Help");
-	public final ApplicationAction about = new AboutAction();
-	
-        
+	private static final long serialVersionUID = 1L;	
 
 	public MainMenuBar(MainWindow mainWindow)
 	{
-		open = new OpenAction(mainWindow.getMapComponent());
-		saveMapExtract = new SaveMapExtract(mainWindow.getMapComponent());
+		// initialize actions
+		ApplicationAction openAction = new OpenAction(mainWindow.getMapComponent());
+		ApplicationAction saveMapExtract = new SaveMapExtract(mainWindow.getMapComponent());
+		ApplicationAction exit = new ExitAction();
 		
-//		TODO: cleanup
-//		backgroundAction_google_satellite = new BackgroundAction(MapProvider.getMapSource(Map.GOOGLE_SATELLITE), mainWindow.getMapComponent());
-//		backgroundAction_google_street = new BackgroundAction(MapProvider.getMapSource(Map.GOOGLE_STREET), mainWindow.getMapComponent());
-		gotoCoordinateAction = new GoToCoordinateAction(mainWindow.getMapComponent());
-		changeMapSourceAction_osm_mapnik = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_MAPNIK), mainWindow.getMapComponent());
-		changeMapSourceAction_osm_tilesAtHome = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_TILESATHOME), mainWindow.getMapComponent());
-		changeMapSourceAction_osm_cycle = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_CYCLE), mainWindow.getMapComponent());
+		ApplicationAction gotoCoordinateAction = new GoToCoordinateAction(mainWindow.getMapComponent());
+		ApplicationAction changeMapSourceAction_osm_mapnik = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_MAPNIK), mainWindow.getMapComponent());
+		ApplicationAction changeMapSourceAction_osm_tilesAtHome = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_TILESATHOME), mainWindow.getMapComponent());
+		ApplicationAction changeMapSourceAction_osm_cycle = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_CYCLE), mainWindow.getMapComponent());
 		
+		ApplicationAction about = new AboutAction();
+		
+		// build up menu
         JMenuItem current;
         
-		fileMenu.setMnemonic('F');
-		current = fileMenu.add(open);
-		current.setAccelerator(open.shortCut);
+        // File menu
+        JMenu fileMenu = new JMenu(I18NHelper.getInstance().getString("menu.file"));
+		fileMenu.setMnemonic(I18NHelper.getInstance().getMnemonic("menu.file"));
+		current = fileMenu.add(openAction);
+		current.setAccelerator(openAction.shortCut);
 		fileMenu.addSeparator();
 		current = fileMenu.add(saveMapExtract);
 		current.setAccelerator(saveMapExtract.shortCut);
@@ -72,23 +52,26 @@ public class MainMenuBar extends JMenuBar
 		current.setAccelerator(exit.shortCut);
 		add(fileMenu);
 		
-		mapMenu.setMnemonic('M');
-//		TODO: cleanup
-//		mapMenu.add(googleMenu);
-//		googleMenu.add(backgroundAction_google_satellite);
-//		googleMenu.add(backgroundAction_google_street);
+		// Map menu
+		JMenu mapMenu = new JMenu(I18NHelper.getInstance().getString("menu.map"));
+		mapMenu.setMnemonic(I18NHelper.getInstance().getMnemonic("menu.map"));
 		current = mapMenu.add(gotoCoordinateAction);
 		current.setAccelerator(gotoCoordinateAction.shortCut);
 		
 		mapMenu.addSeparator();
+		
+		JMenu sourceMenu = new JMenu(I18NHelper.getInstance().getString("menu.map.source"));
 		sourceMenu.setIcon(new ImageIcon(ImageProvider.getImage("map_source")));
+		sourceMenu.setMnemonic(I18NHelper.getInstance().getMnemonic("menu.map.source"));
 		mapMenu.add(sourceMenu);
 		sourceMenu.add(changeMapSourceAction_osm_mapnik);
 		sourceMenu.add(changeMapSourceAction_osm_tilesAtHome);
 		sourceMenu.add(changeMapSourceAction_osm_cycle);
 		add(mapMenu);
 		
-		helpMenu.setMnemonic('H');
+		// Help menu
+		JMenu helpMenu = new JMenu(I18NHelper.getInstance().getString("menu.help"));
+		helpMenu.setMnemonic(I18NHelper.getInstance().getMnemonic("menu.help"));
 		current = helpMenu.add(about);
 		current.setAccelerator(about.shortCut);
 		add(helpMenu);

@@ -3,6 +3,8 @@ package actions;
 import gui.GotoCoordinateDialog;
 import gui.MapComponent;
 
+import i18n.I18NHelper;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -13,7 +15,7 @@ public class GoToCoordinateAction extends ApplicationAction
 	
 	public GoToCoordinateAction(MapComponent mapComponent)
 	{
-		super("Goto coordinate...", "goto", KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK);
+		super(I18NHelper.getInstance().getString("action.goto"), "goto", KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK);
 		
 		this.mapComponent = mapComponent;
 	}

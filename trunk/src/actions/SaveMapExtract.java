@@ -1,6 +1,7 @@
 package actions;
 
 import gui.MapComponent;
+import i18n.I18NHelper;
 import io.ImageFileFilter;
 
 import java.awt.AWTException;
@@ -28,7 +29,7 @@ public class SaveMapExtract extends ApplicationAction
 
 	public SaveMapExtract(MapComponent mapComponent)
 	{
-		super("Save map extract...", "save_map_extract", KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK);
+		super(I18NHelper.getInstance().getString("action.savemapextract"), "save_map_extract", KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK);
 		
 		this.mapComponent = mapComponent;
 	}
@@ -38,7 +39,7 @@ public class SaveMapExtract extends ApplicationAction
 	{
 		JFileChooser fileChooser = new JFileChooser();
 		
-		fileChooser.setDialogTitle("Save map extract...");
+		fileChooser.setDialogTitle(I18NHelper.getInstance().getString("action.savemapextract.fctitle"));
 		fileChooser.setFileFilter(new ImageFileFilter());
 		
 		int returnValue = fileChooser.showSaveDialog(null);
@@ -91,7 +92,8 @@ public class SaveMapExtract extends ApplicationAction
 		}
 		else // user chose an unsupported file type
 		{
-			JOptionPane.showMessageDialog(null, "You chose an unsupported file type.\nPlease choose a different one.", "Unsupported file type", JOptionPane.ERROR_MESSAGE);
+			// TODO ev. File-dialog wieder öffnen...
+			JOptionPane.showMessageDialog(null, I18NHelper.getInstance().getString("action.savemapextract.unsupportedtype.msg"), I18NHelper.getInstance().getString("action.savemapextract.unsupportedtype.title"), JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

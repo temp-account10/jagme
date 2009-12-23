@@ -19,13 +19,4 @@ public abstract class ApplicationAction extends AbstractAction
 			this.shortCut = KeyStroke.getKeyStroke(shortCut, modifier);
 		}
 	}
-
-	/**
-	 * needs to be overridden to be useful
-	 */
-	// TODO
-	/*public void addListener(ApplicationAction a)
-	{
-		return;
-	}*/
 }

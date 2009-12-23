@@ -1,5 +1,7 @@
 package io;
 
+import i18n.I18NHelper;
+
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -44,7 +46,7 @@ public class ImageFileFilter extends SuffixAwareFilter
 			count++;
 		}
 		
-		String description = String.format("Supported Image file types (%s)", fileFormats);
+		String description = String.format("%s (%s)", I18NHelper.getInstance().getString("imagefilefilter.supportedtypes"), fileFormats);
 		
 		return description;
 	}

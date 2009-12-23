@@ -1,5 +1,7 @@
 package gui;
 
+import i18n.I18NHelper;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -55,7 +57,7 @@ public class GotoCoordinateDialog
 		dialog = new JDialog();
 		
 		// define basic dialog settings
-		dialog.setTitle("Goto coordinate");
+		dialog.setTitle(I18NHelper.getInstance().getString("dialog.goto.title"));
 		dialog.setModal(true);
 		dialog.setSize(300, 160);
 		dialog.setIconImage(ImageProvider.getImage("jagme"));
@@ -73,13 +75,13 @@ public class GotoCoordinateDialog
         JPanel tabOnePanel = new JPanel();
 		tabOnePanel.setLayout(new GridLayout(3,2));
 		
-		tabOnePanel.add(new JLabel("Latitude:"));
+		tabOnePanel.add(new JLabel(String.format("%s:", I18NHelper.getInstance().getString("dialog.goto.latitude"))));
 		decLatitudeTextField = new JTextField();
 		decLatitudeTextField.setInputVerifier(decimalCoordinateInputVerifier);
 		decLatitudeTextField.addFocusListener(focusListener);
 		tabOnePanel.add(decLatitudeTextField);
 		
-		tabOnePanel.add(new JLabel("Longitude:"));
+		tabOnePanel.add(new JLabel(String.format("%s:", I18NHelper.getInstance().getString("dialog.goto.longitude"))));
 		decLongitudeTextField = new JTextField();
 		decLongitudeTextField.setInputVerifier(decimalCoordinateInputVerifier);
 		decLongitudeTextField.addFocusListener(focusListener);
@@ -106,28 +108,29 @@ public class GotoCoordinateDialog
 			throw new RuntimeException();
 		}
 		
-		tabTwoPanel.add(new JLabel("Latitude:"));
+		tabTwoPanel.add(new JLabel(String.format("%s:", I18NHelper.getInstance().getString("dialog.goto.latitude"))));
 		degLatitudeTextField = new JFormattedTextField(latDegMinSecFormatter);
 		degLatitudeTextField.addFocusListener(focusListener);
 		tabTwoPanel.add(degLatitudeTextField);
 		
-		tabTwoPanel.add(new JLabel("Longitude:"));
+		tabTwoPanel.add(new JLabel(String.format("%s:", I18NHelper.getInstance().getString("dialog.goto.longitude"))));
 		degLongitudeTextField = new JFormattedTextField(lonDegMinSecFormatter);
 		degLongitudeTextField.addFocusListener(focusListener);
 		tabTwoPanel.add(degLongitudeTextField);
 		
 		// create TabbedPane and add tabs
 		JTabbedPane tabbedPane = new JTabbedPane(); 
-		tabbedPane.addTab("Lat/Lon", tabOnePanel); 
-		tabbedPane.addTab("Deg/Min/Sec", tabTwoPanel);
+		tabbedPane.addTab(I18NHelper.getInstance().getString("dialog.goto.latlon"), tabOnePanel);
+		tabbedPane.addTab(I18NHelper.getInstance().getString("dialog.goto.degminsec"), tabTwoPanel);
 		
 		// button panel
 		JPanel buttonPanel = new JPanel();
-		okButton = new JButton("OK");
+		
+		okButton = new JButton(I18NHelper.getInstance().getString("generic.ok"));
 		okButton.addActionListener(buttonActionListener);
 		buttonPanel.add(okButton);
 		
-		cancelButton = new JButton("Cancel");
+		cancelButton = new JButton(I18NHelper.getInstance().getString("generic.cancel"));
 		cancelButton.addActionListener(buttonActionListener);
 		buttonPanel.add(cancelButton);
 		

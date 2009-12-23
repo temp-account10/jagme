@@ -16,7 +16,7 @@ public class SearchAction extends ApplicationAction
 	
 	public SearchAction(SearchComponent searchComponent)
 	{
-		super("Search", "search", 0, 0);
+		super(null, "search", 0, 0);
 		
 		this.searchComponent = searchComponent;
 	}
@@ -50,6 +50,7 @@ public class SearchAction extends ApplicationAction
 			}
 			else
 			{
+				// TODO i18n
 				JOptionPane.showMessageDialog(null, "Your search for \"" + searchString + "\" returned no results.\nPlease try a different term.", "No results", JOptionPane.WARNING_MESSAGE);
 			}
 

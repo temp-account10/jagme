@@ -1,5 +1,7 @@
 package gui;
 
+import i18n.I18NHelper;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -45,7 +47,7 @@ public class MapComponent extends JXMapViewer
 		        g.setPaint(new Color(0,0,0,180));
 		        g.fillRect(0, getSize().height-STATUS_BAR_HEIGHT, getSize().width, STATUS_BAR_HEIGHT);
 		        g.setPaint(Color.WHITE);
-		        g.drawString(String.format("Latitude: %f  Longitude: %f", currentLatitude, currentLongitude), 10, getSize().height-8);
+		        g.drawString(String.format("%s: %f  %s: %f", I18NHelper.getInstance().getString("mapcomponent.latitude"), currentLatitude, I18NHelper.getInstance().getString("mapcomponent.longitude"), currentLongitude), 10, getSize().height-8);
 		    }
 		};
 		
