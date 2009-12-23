@@ -2,6 +2,8 @@ package gui;
 
 import i18n.I18NHelper;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
@@ -20,18 +22,23 @@ public class MainWindow
 	
 	private void initializeComponents()
 	{
-		frame = new JFrame(I18NHelper.getInstance().getString("generic.appname")); 
+		frame = new JFrame(I18NHelper.getInstance().getString("generic.appname"));
+		// TODO ev. exit action?
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 	    frame.setSize(800, 600);
 	    frame.setIconImage(ImageProvider.getImage("jagme"));
+	    frame.setLayout(new BorderLayout());
 	    
 	    MainMenuBar mainMenuBar = new MainMenuBar(this);
 	    frame.setJMenuBar(mainMenuBar);
 	    
+	    Toolbar toolbar = new Toolbar(this);
+	    frame.add(toolbar, BorderLayout.NORTH);
+	    
 	    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, searchComponent, mapComponent);
 	    splitPane.setOneTouchExpandable(true);
 	    splitPane.setDividerLocation(200);
-	    frame.add(splitPane);
+	    frame.add(splitPane, BorderLayout.CENTER);
 	}
 	
 	public MapComponent getMapComponent()
