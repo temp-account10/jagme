@@ -19,12 +19,6 @@ public class MapProvider
 			MapSource mapSource = null;
 			switch(map)
 			{
-				case GOOGLE_SATELLITE:
-					mapSource = new GoogleSatellite();
-					break;
-				case GOOGLE_STREET:
-					mapSource = new GoogleStreet();
-					break;
 				case OPENSTREETMAP_MAPNIK:
 					mapSource = new OSMMapnik();
 					break;

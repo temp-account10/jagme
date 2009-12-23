@@ -1,5 +1,7 @@
 package gui;
 
+import i18n.I18NHelper;
+
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
@@ -18,7 +20,7 @@ public class MainWindow
 	
 	private void initializeComponents()
 	{
-		frame = new JFrame("Jagme"); 
+		frame = new JFrame(I18NHelper.getInstance().getString("generic.appname")); 
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 	    frame.setSize(800, 600);
 	    frame.setIconImage(ImageProvider.getImage("jagme"));

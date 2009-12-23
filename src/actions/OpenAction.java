@@ -1,6 +1,7 @@
 package actions;
 
 import gui.MapComponent;
+import i18n.I18NHelper;
 import io.GPXReader;
 
 import java.awt.event.ActionEvent;
@@ -61,7 +62,7 @@ public class OpenAction extends ApplicationAction
 			}
 			catch (ReadException exception)
 			{
-				JOptionPane.showMessageDialog(null, exception.getMessage(), "Read error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, exception.getMessage(), I18NHelper.getInstance().getString("action.open.readerrortitle"), JOptionPane.ERROR_MESSAGE);
 				mapComponent.removeOverlayPainter(infoTextOverlay);
 			}
 			return null;
@@ -76,7 +77,7 @@ public class OpenAction extends ApplicationAction
 	
 	public OpenAction(MapComponent mapComponent)
 	{
-		super("Open...", "open", KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK);
+		super(I18NHelper.getInstance().getString("action.open"), "open", KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK);
 		
 		this.mapComponent = mapComponent;
 	}
@@ -97,7 +98,8 @@ public class OpenAction extends ApplicationAction
 			@Override
 			public String getDescription()
 			{
-				return "GPX Files (*.gpx)";
+				String result = String.format("%s (*.gpx)", I18NHelper.getInstance().getString("action.open.gpxfiles"));
+				return result;
 			}
 		});
 
@@ -107,8 +109,8 @@ public class OpenAction extends ApplicationAction
 		{
 			File file = fc.getSelectedFile();
 			
-			String infoText = "Loading file. Please wait...";
-			InformativeTextPainter loadingInfoTextOverlay = new InformativeTextPainter(mapComponent, infoText);
+			String loadingText = I18NHelper.getInstance().getString("action.open.loading");
+			InformativeTextPainter loadingInfoTextOverlay = new InformativeTextPainter(mapComponent, loadingText);
 			
 			mapComponent.addOverlayPainter(loadingInfoTextOverlay.getPainter());
 			

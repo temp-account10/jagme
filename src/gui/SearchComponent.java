@@ -50,6 +50,7 @@ public class SearchComponent extends JPanel
 		ImageIcon searchIcon = new ImageIcon(ImageProvider.getImage("search"));
 		searchButton = new JButton(searchIcon);
 		searchButton.setMargin(new Insets(0, 0, 0, 0));
+		// TODO i18n
 		searchButton.setToolTipText("Initiate search for the given string");
 		searchButton.addActionListener(searchAction);
 		
