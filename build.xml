@@ -33,6 +33,7 @@
 				<attribute name="Main-Date" value="${version.entry.commit.date}"/>
 			</manifest>
 			<zipfileset dir="images" prefix="images" />
+			<zipfileset dir="src/i18n" includes="*.properties" prefix="i18n" />
 			
 			<!-- All jar files necessary to run jargme --> 			
 			<zipfileset src="lib/geonames-1.0.1.jar" />
