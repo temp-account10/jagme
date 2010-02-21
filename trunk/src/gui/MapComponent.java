@@ -5,39 +5,27 @@ import i18n.I18NHelper;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
-
-import maps.MapSource;
-import maps.OSMMapnik;
 
 import org.jdesktop.swingx.JXMapViewer;
-import org.jdesktop.swingx.mapviewer.GeoPosition;
-import org.jdesktop.swingx.painter.CompoundPainter;
 import org.jdesktop.swingx.painter.Painter;
 
 import tools.ImageProvider;
+import control.MapComponentController;
+import data.MapComponentModel;
 
 public class MapComponent extends JXMapViewer
 {
 	public final int STATUS_BAR_HEIGHT = 25;
 	
 	private static final long serialVersionUID = 1L;
-	private double currentLatitude;
-	private double currentLongitude;
-	private CompoundPainter<Painter<JXMapViewer>> compoundPainter = new CompoundPainter<Painter<JXMapViewer>>();
-	private ArrayList<Painter<JXMapViewer>> overlayPainters = new ArrayList<Painter<JXMapViewer>>();
-	
+	private MapComponentModel model = new MapComponentModel();
+	private MapComponentController control = new MapComponentController(this, model);
+
 	public MapComponent()
 	{
 		super();
-		
-		// set default map source
-		MapSource defaultMapSource = new OSMMapnik();
-		setTileFactory(defaultMapSource.getTileFactory());
-		
-		setZoom(defaultMapSource.getTileFactory().getInfo().getTotalMapZoom()-2);
-		setCenterPosition(new GeoPosition(0.0, 0.0));
 		
         setLoadingImage(ImageProvider.getImage("clock"));
         
@@ -47,12 +35,20 @@ public class MapComponent extends JXMapViewer
 		        g.setPaint(new Color(0,0,0,180));
 		        g.fillRect(0, getSize().height-STATUS_BAR_HEIGHT, getSize().width, STATUS_BAR_HEIGHT);
 		        g.setPaint(Color.WHITE);
-		        g.drawString(String.format("%s: %f  %s: %f", I18NHelper.getInstance().getString("mapcomponent.latitude"), currentLatitude, I18NHelper.getInstance().getString("mapcomponent.longitude"), currentLongitude), 10, getSize().height-8);
+		        
+		        String latitude = "-";
+		        String longitude = "-";
+		        if(model.areCoordinatesValid())
+		        {
+		        	latitude = String.format("%f", model.getCurrentLatitude());
+		        	longitude = String.format("%f", model.getCurrentLongitude());
+		        }
+		        
+		        g.drawString(String.format("%s: %s  %s: %s", I18NHelper.getInstance().getString("mapcomponent.latitude"), latitude, I18NHelper.getInstance().getString("mapcomponent.longitude"), longitude), 10, getSize().height-8);
 		    }
 		};
 		
-		addOverlayPainter(statusTextOverlay);
-		
+		control.addOverlayPainter(statusTextOverlay);
 		
 		this.addMouseMotionListener(new MouseMotionListener()
         {
@@ -63,29 +59,45 @@ public class MapComponent extends JXMapViewer
 			@Override
 			public void mouseMoved(MouseEvent e)
 			{
-				GeoPosition geoPosition = convertPointToGeoPosition(e.getPoint());
-				currentLatitude = geoPosition.getLatitude();
-			    currentLongitude = geoPosition.getLongitude();
-			    repaint();
+				control.mouseMoved(e);
 			}
         });
+		
+		this.addMouseListener(new MouseListener()
+		{
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{ }
+			
+			@Override
+			public void mousePressed(MouseEvent e)
+			{ }
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				control.mouseExited(e);
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				control.mouseEntered(e);
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{ }
+		});
+	}	
+
+	public MapComponentController getControl()
+	{
+		return control;
 	}
 	
-	public void addOverlayPainter(Painter<JXMapViewer> painter)
+	public MapComponentModel getModel()
 	{
-		overlayPainters.add(painter);
-		
-		compoundPainter.setPainters(overlayPainters.toArray(new Painter[overlayPainters.size()]));
-		compoundPainter.setCacheable(false);
-		setOverlayPainter(compoundPainter);
-	}
-	
-	public void removeOverlayPainter(Painter<JXMapViewer> painter)
-	{
-		overlayPainters.remove(painter);
-		
-		compoundPainter.setPainters(overlayPainters.toArray(new Painter[overlayPainters.size()]));
-		compoundPainter.setCacheable(false);
-		setOverlayPainter(compoundPainter);
+		return model;
 	}
 }

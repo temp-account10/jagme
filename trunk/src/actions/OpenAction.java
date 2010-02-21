@@ -1,5 +1,6 @@
 package actions;
 
+import gui.MainWindow;
 import gui.MapComponent;
 import i18n.I18NHelper;
 import io.GPXReader;
@@ -29,7 +30,7 @@ import exceptions.ReadException;
 public class OpenAction extends ApplicationAction
 {
 	private static final long serialVersionUID = 1L;
-	private MapComponent mapComponent;
+	private MainWindow mainWindow;
 	
 	private class OpenActivity extends SwingWorker<Object, Object> {
 		private File file;
@@ -42,13 +43,16 @@ public class OpenAction extends ApplicationAction
 		}
 		
 		@Override
-		protected Object doInBackground() throws Exception {
+		protected Object doInBackground() throws Exception
+		{
+			MapComponent mapComponent = mainWindow.getMapComponent();
+			
 			GPXReader reader;
 			try
 			{
 				reader = new GPXReader(file);
 				GPXData data = reader.getGPXDataObject();
-				mapComponent.addOverlayPainter(new GPXPainter(data).getPainter());
+				mapComponent.getControl().addOverlayPainter(new GPXPainter(data).getPainter());
 				
 				Bounds bounds = data.getBounds();
 				LatLon center = bounds.getCenter();
@@ -63,7 +67,7 @@ public class OpenAction extends ApplicationAction
 			catch (ReadException exception)
 			{
 				JOptionPane.showMessageDialog(null, exception.getMessage(), I18NHelper.getInstance().getString("action.open.readerrortitle"), JOptionPane.ERROR_MESSAGE);
-				mapComponent.removeOverlayPainter(infoTextOverlay);
+				mapComponent.getControl().removeOverlayPainter(infoTextOverlay);
 			}
 			return null;
 		}
@@ -71,15 +75,15 @@ public class OpenAction extends ApplicationAction
 		@Override
 		protected void done()
 		{
-			mapComponent.removeOverlayPainter(infoTextOverlay);
+			mainWindow.getMapComponent().getControl().removeOverlayPainter(infoTextOverlay);
 		}
 	}
 	
-	public OpenAction(MapComponent mapComponent)
+	public OpenAction(MainWindow mainWindow)
 	{
 		super(I18NHelper.getInstance().getString("action.open"), "open", KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK);
 		
-		this.mapComponent = mapComponent;
+		this.mainWindow = mainWindow;
 	}
 	
 	@Override
@@ -103,23 +107,20 @@ public class OpenAction extends ApplicationAction
 			}
 		});
 
-		int state = fc.showOpenDialog(null);
+		int state = fc.showOpenDialog(mainWindow.getJFrame());
 
 		if (state == JFileChooser.APPROVE_OPTION)
 		{
 			File file = fc.getSelectedFile();
 			
+			MapComponent mapComponent = mainWindow.getMapComponent();
+			
 			String loadingText = I18NHelper.getInstance().getString("action.open.loading");
 			InformativeTextPainter loadingInfoTextOverlay = new InformativeTextPainter(mapComponent, loadingText);
 			
-			mapComponent.addOverlayPainter(loadingInfoTextOverlay.getPainter());
+			mapComponent.getControl().addOverlayPainter(loadingInfoTextOverlay.getPainter());
 			
-			try {
-				new OpenActivity(file, loadingInfoTextOverlay.getPainter()).execute();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			new OpenActivity(file, loadingInfoTextOverlay.getPainter()).execute();
 		}
 	}
 }

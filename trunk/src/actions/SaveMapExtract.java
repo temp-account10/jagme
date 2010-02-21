@@ -1,5 +1,6 @@
 package actions;
 
+import gui.MainWindow;
 import gui.MapComponent;
 import i18n.I18NHelper;
 import io.ImageFileFilter;
@@ -25,24 +26,29 @@ import tools.ImageUtilities;
 public class SaveMapExtract extends ApplicationAction
 {
 	private static final long serialVersionUID = 1L;
-	private MapComponent mapComponent;
+	private MainWindow mainWindow;
 
-	public SaveMapExtract(MapComponent mapComponent)
+	public SaveMapExtract(MainWindow mainWindow)
 	{
 		super(I18NHelper.getInstance().getString("action.savemapextract"), "save_map_extract", KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK);
 		
-		this.mapComponent = mapComponent;
+		this.mainWindow = mainWindow;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
+	{
+		performAction();
+	}
+	
+	private void performAction()
 	{
 		JFileChooser fileChooser = new JFileChooser();
 		
 		fileChooser.setDialogTitle(I18NHelper.getInstance().getString("action.savemapextract.fctitle"));
 		fileChooser.setFileFilter(new ImageFileFilter());
 		
-		int returnValue = fileChooser.showSaveDialog(null);
+		int returnValue = fileChooser.showSaveDialog(mainWindow.getJFrame());
 		
 		switch(returnValue)
 		{
@@ -52,11 +58,10 @@ public class SaveMapExtract extends ApplicationAction
 			case JFileChooser.CANCEL_OPTION:
 				break;
 			case JFileChooser.ERROR_OPTION:
-				// TODO
+				JOptionPane.showMessageDialog(null, I18NHelper.getInstance().getString("action.savemapextract.filedialogerror.msg"), I18NHelper.getInstance().getString("generic.error"), JOptionPane.ERROR_MESSAGE);
 				break;
 		}
 	}
-	
 	private void saveImage(File outputFile)
 	{
 		String fileSuffix = FileUtilities.getSuffix(outputFile);
@@ -68,12 +73,14 @@ public class SaveMapExtract extends ApplicationAction
 			{
 				robot = new Robot();
 			}
-			catch (AWTException e1)
+			catch (AWTException e)
 			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				System.exit(-1);
+				JOptionPane.showMessageDialog(null, I18NHelper.getInstance().getString("action.savemapextract.creationerror"), I18NHelper.getInstance().getString("generic.error"), JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+				return;
 			}
+			
+			MapComponent mapComponent = mainWindow.getMapComponent();
 			
 			Point componentLocation = mapComponent.getLocationOnScreen();
 			Dimension dimension = new Dimension(mapComponent.getWidth(), mapComponent.getHeight() - mapComponent.STATUS_BAR_HEIGHT);
@@ -84,16 +91,16 @@ public class SaveMapExtract extends ApplicationAction
 			{
 				ImageIO.write(image, fileSuffix, outputFile);
 			}
-	        catch (IOException e1)
+	        catch (IOException e)
 	        {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+	        	JOptionPane.showMessageDialog(null, I18NHelper.getInstance().getString("action.savemapextract.ioerror"), I18NHelper.getInstance().getString("generic.error"), JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
 			}			
 		}
 		else // user chose an unsupported file type
 		{
-			// TODO ev. File-dialog wieder öffnen...
 			JOptionPane.showMessageDialog(null, I18NHelper.getInstance().getString("action.savemapextract.unsupportedtype.msg"), I18NHelper.getInstance().getString("action.savemapextract.unsupportedtype.title"), JOptionPane.ERROR_MESSAGE);
+			performAction();
 		}
 	}
 }

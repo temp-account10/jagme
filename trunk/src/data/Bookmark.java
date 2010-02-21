@@ -57,4 +57,10 @@ public class Bookmark
 	{
 		this.zoomlevel = zoomlevel;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return getName();
+	}
 }

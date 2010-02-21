@@ -8,9 +8,4 @@ public class Maps
 		OPENSTREETMAP_TILESATHOME,
 		OPENSTREETMAP_CYCLE
 	}
-	
-	public MapSource getMapSource(Map map)
-	{
-		return null;
-	}
 }

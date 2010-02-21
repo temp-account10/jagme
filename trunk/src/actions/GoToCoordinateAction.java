@@ -1,6 +1,7 @@
 package actions;
 
 import gui.GotoCoordinateDialog;
+import gui.MainWindow;
 import gui.MapComponent;
 
 import i18n.I18NHelper;
@@ -11,19 +12,21 @@ import java.awt.event.KeyEvent;
 public class GoToCoordinateAction extends ApplicationAction
 {
 	private static final long serialVersionUID = 1L;
-	private MapComponent mapComponent;
+	private MainWindow mainWindow;
 	
-	public GoToCoordinateAction(MapComponent mapComponent)
+	public GoToCoordinateAction(MainWindow mainWindow)
 	{
 		super(I18NHelper.getInstance().getString("action.goto"), "goto", KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK);
 		
-		this.mapComponent = mapComponent;
+		this.mainWindow = mainWindow;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		GotoCoordinateDialog dialog = new GotoCoordinateDialog();
+		GotoCoordinateDialog dialog = new GotoCoordinateDialog(mainWindow.getJFrame());
+		
+		MapComponent mapComponent = mainWindow.getMapComponent();
 		
 		// set current position as the base for the user input
 		dialog.setGeoPosition(mapComponent.getCenterPosition());
