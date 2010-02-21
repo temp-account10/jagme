@@ -1,5 +1,7 @@
 package maps;
 
+import maps.Maps.Map;
+
 import org.jdesktop.swingx.mapviewer.DefaultTileFactory;
 import org.jdesktop.swingx.mapviewer.TileFactory;
 import org.jdesktop.swingx.mapviewer.TileFactoryInfo;
@@ -37,5 +39,11 @@ public class OSMCycle extends MapSource
 	public String getName()
 	{
 		return name;
+	}
+	
+	@Override
+	public Map getMap()
+	{
+		return Map.OPENSTREETMAP_CYCLE;
 	}
 }

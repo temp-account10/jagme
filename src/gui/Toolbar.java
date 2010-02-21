@@ -13,9 +13,9 @@ public class Toolbar extends JToolBar
 
 	public Toolbar(MainWindow mainWindow)
 	{
-		ApplicationAction openAction = new OpenAction(mainWindow.getMapComponent());
-		ApplicationAction saveMapExtract = new SaveMapExtract(mainWindow.getMapComponent());
-		ApplicationAction gotoCoordinateAction = new GoToCoordinateAction(mainWindow.getMapComponent());
+		ApplicationAction openAction = new OpenAction(mainWindow);
+		ApplicationAction saveMapExtract = new SaveMapExtract(mainWindow);
+		ApplicationAction gotoCoordinateAction = new GoToCoordinateAction(mainWindow);
 		
 		add(openAction);
 		add(saveMapExtract);

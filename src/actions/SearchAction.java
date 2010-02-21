@@ -2,6 +2,8 @@ package actions;
 
 import gui.SearchComponent;
 
+import i18n.I18NHelper;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
@@ -37,10 +39,13 @@ public class SearchAction extends ApplicationAction
 			try
 			{
 				searchResult = WebService.search(searchCriteria);
+				searchComponent.setStatus(SearchComponent.Status.READY);
 			}
-			catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(null, I18NHelper.getInstance().getString("search.webserviceerror"), I18NHelper.getInstance().getString("generic.error"), JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+				return;
 			}
 			
 			// check if there are any results
@@ -50,8 +55,7 @@ public class SearchAction extends ApplicationAction
 			}
 			else
 			{
-				// TODO i18n
-				JOptionPane.showMessageDialog(null, "Your search for \"" + searchString + "\" returned no results.\nPlease try a different term.", "No results", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, I18NHelper.getInstance().getString("search.noresult.msg"), I18NHelper.getInstance().getString("search.noresult.title"), JOptionPane.WARNING_MESSAGE);
 			}
 
 			searchComponent.setStatus(SearchComponent.Status.READY);

@@ -10,6 +10,8 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import control.ErrorHandler;
+
 public class ImageProvider
 {
 	/**
@@ -141,7 +143,7 @@ public class ImageProvider
     		}
    			catch (MalformedURLException e)
    			{
-   				// TODO
+   				ErrorHandler.handleFatalError(e);
    			}
     	}
    		

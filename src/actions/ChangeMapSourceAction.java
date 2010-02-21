@@ -4,8 +4,6 @@ import gui.MapComponent;
 
 import java.awt.event.ActionEvent;
 
-import org.jdesktop.swingx.mapviewer.GeoPosition;
-
 import maps.MapSource;
 
 public class ChangeMapSourceAction extends ApplicationAction
@@ -25,11 +23,7 @@ public class ChangeMapSourceAction extends ApplicationAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		int zoom = mapComponent.getZoom();
-		GeoPosition geoPosition = mapComponent.getCenterPosition();
-		mapComponent.setTileFactory(mapSource.getTileFactory());
-		mapComponent.setCenterPosition(geoPosition);
-		mapComponent.setZoom(zoom);
+		mapComponent.getControl().setMapSource(mapSource);
 	}
 
 }

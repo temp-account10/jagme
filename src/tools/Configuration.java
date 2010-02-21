@@ -1,5 +1,7 @@
 package tools;
 
+import i18n.I18NHelper;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
+
+import javax.swing.JOptionPane;
 
 public class Configuration
 {
@@ -97,8 +101,11 @@ public class Configuration
 		}
 		catch (FileNotFoundException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// No configuration file found, so we abort loading.
+			// There is no need need to create an empty config
+			// file as one will be created when the configuration
+			// is first stored.
+			return;
 		}
 		
 		try
@@ -107,8 +114,9 @@ public class Configuration
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, I18NHelper.getInstance().getString("configuration.read.ioerror"), I18NHelper.getInstance().getString("generic.error"), JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
+			return; // abort
 		}
 		
 		for (Object o : properties.keySet())
@@ -124,12 +132,12 @@ public class Configuration
 	{
 		// prepare properties
 		Properties properties = new Properties();
-		
+
 		for(String key : configTable.keySet())
 		{
 			properties.setProperty(key, configTable.get(key));
 		}
-		
+
 		// write properties to file
 		try
 		{
@@ -138,7 +146,7 @@ public class Configuration
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, I18NHelper.getInstance().getString("configuration.store.ioerror"), I18NHelper.getInstance().getString("generic.error"), JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 	}

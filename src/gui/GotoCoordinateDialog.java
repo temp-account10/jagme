@@ -3,9 +3,7 @@ package gui;
 import i18n.I18NHelper;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -19,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -30,6 +29,7 @@ import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 import tools.CoordinateUtilities;
 import tools.ImageProvider;
+import control.ErrorHandler;
 
 public class GotoCoordinateDialog
 {
@@ -46,13 +46,13 @@ public class GotoCoordinateDialog
 	private JButton okButton;
 	private JButton cancelButton;
 	
-	public GotoCoordinateDialog()
+	public GotoCoordinateDialog(JFrame owner)
 	{
-		initializeComponents();
+		initializeComponents(owner);
 		initCloseListener();
 	}
 	
-	private void initializeComponents()
+	private void initializeComponents(JFrame owner)
 	{
 		dialog = new JDialog();
 		
@@ -63,9 +63,7 @@ public class GotoCoordinateDialog
 		dialog.setIconImage(ImageProvider.getImage("jagme"));
 		
 		// position dialog in the center of the screen
-		Dimension bounds = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension abounds = dialog.getSize(); 
-        dialog.setLocation((bounds.width - abounds.width) / 2, (bounds.height - abounds.height) / 3); 
+		dialog.setLocationRelativeTo(owner); 
 
 		// create main panel and define settings
         JPanel mainPanel = new JPanel();
@@ -103,9 +101,7 @@ public class GotoCoordinateDialog
 		}
 		catch (ParseException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new RuntimeException();
+			ErrorHandler.handleFatalError(e);
 		}
 		
 		tabTwoPanel.add(new JLabel(String.format("%s:", I18NHelper.getInstance().getString("dialog.goto.latitude"))));
@@ -206,7 +202,7 @@ public class GotoCoordinateDialog
 		@Override
 		public boolean verify(JComponent input)
 		{
-			String text;
+			String text = null;
 
 			if(input instanceof JTextField)
 			{
@@ -214,8 +210,7 @@ public class GotoCoordinateDialog
 			}
 			else
 			{
-				// TODO
-				throw new RuntimeException();
+				ErrorHandler.handleFatalError(new Exception("Error in GotoCoordinateDialog. Given component is not of type JTextField."));
 			}
 			
 			// ensure value is in double format
@@ -246,8 +241,7 @@ public class GotoCoordinateDialog
 			}
 			else
 			{
-				// TODO
-				throw new RuntimeException();
+				ErrorHandler.handleFatalError(new Exception("Error in GotoCoordinateDialog: Unexpected text field."));
 			}
 
 			return true;
@@ -277,7 +271,8 @@ public class GotoCoordinateDialog
 	private FocusListener focusListener = new FocusListener()
 	{
 		@Override
-		public void focusLost(FocusEvent e) {
+		public void focusLost(FocusEvent e)
+		{
 			Object source = e.getSource();
 
 			double latitude = geoPosition.getLatitude();
@@ -301,8 +296,7 @@ public class GotoCoordinateDialog
 			}
 			else
 			{
-				// TODO
-				throw new RuntimeException();
+				ErrorHandler.handleFatalError(new Exception("Error in GotoCoordinateDialog: FocusListener applied on an unexpected component."));
 			}
 			
 			geoPosition = new GeoPosition(latitude, longitude);
@@ -330,8 +324,7 @@ public class GotoCoordinateDialog
 			}
 			else
 			{
-				// TODO
-				throw new RuntimeException();
+				ErrorHandler.handleFatalError(new Exception("Error in GotoCoordinateDialog: ActionListener applied on an unexpected component."));
 			}
 			
 			dialog.setVisible(false);

@@ -1,5 +1,7 @@
 package gui;
 
+import i18n.I18NHelper;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Insets;
@@ -50,8 +52,7 @@ public class SearchComponent extends JPanel
 		ImageIcon searchIcon = new ImageIcon(ImageProvider.getImage("search"));
 		searchButton = new JButton(searchIcon);
 		searchButton.setMargin(new Insets(0, 0, 0, 0));
-		// TODO i18n
-		searchButton.setToolTipText("Initiate search for the given string");
+		searchButton.setToolTipText(I18NHelper.getInstance().getString("searchcomponent.searchbutton.tooltip"));
 		searchButton.addActionListener(searchAction);
 		
 		listModel = new DefaultListModel();
