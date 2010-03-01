@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import maps.MapProvider;
 import maps.MapSource;
-import maps.Maps;
 import maps.OSMMapnik;
 import maps.Maps.Map;
 
@@ -17,9 +16,7 @@ import org.jdesktop.swingx.painter.CompoundPainter;
 import org.jdesktop.swingx.painter.Painter;
 
 import tools.Configuration;
-import data.Bookmark;
 import data.MapComponentModel;
-import data.coordinate.LatLon;
 
 public class MapComponentController
 {
