@@ -64,6 +64,7 @@ public class GPXReader
 				{
 					case XMLStreamConstants.START_DOCUMENT:
 						gpxData = new GPXData();
+						parser.next();
 						break;
 	
 					case XMLStreamConstants.END_DOCUMENT:
@@ -79,17 +80,18 @@ public class GPXReader
 	
 					case XMLStreamConstants.START_ELEMENT:
 						handleStartElement();
+						parser.next();
 						break;
 
 					case XMLStreamConstants.END_ELEMENT:
 						handleEndElement();
+						parser.next();
 						break;
 	
 					default:
+						parser.next();
 						break;
 				}
-				
-				parser.next();
 			}
 		}
 		catch (XMLStreamException e)
