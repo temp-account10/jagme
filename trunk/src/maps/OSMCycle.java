@@ -15,7 +15,7 @@ public class OSMCycle extends MapSource
 	{
 		final int max = 17;
 		
-        TileFactoryInfo info = new TileFactoryInfo(0,max,max, 256, true, true, "http://www.thunderflames.org/tiles/cycle", "x","y","z")
+        TileFactoryInfo info = new TileFactoryInfo(0,max,max, 256, true, true, "http://a.andy.sandbox.cloudmade.com/tiles/cycle", "x","y","z")
         {
         	public String getTileUrl(int x, int y, int zoom)
         	{
