@@ -1,5 +1,6 @@
 package data;
 
+import maps.MapSource;
 import maps.Maps.Map;
 
 public class MapComponentModel
@@ -7,7 +8,7 @@ public class MapComponentModel
 	private boolean coordinatesValid;
 	private double currentLatitude;
 	private double currentLongitude;
-	private Map map;
+	private MapSource mapSource;
 	
 	public boolean areCoordinatesValid()
 	{
@@ -39,13 +40,13 @@ public class MapComponentModel
 		this.currentLongitude = currentLongitude;
 	}
 
-	public void setMap(Map map)
+	public void setMapSource(MapSource mapSource)
 	{
-		this.map = map;
+		this.mapSource = mapSource;
 	}
 
-	public Map getMap()
+	public MapSource getMapSource()
 	{
-		return map;
+		return mapSource;
 	}
 }

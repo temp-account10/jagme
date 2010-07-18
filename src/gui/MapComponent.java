@@ -91,6 +91,13 @@ public class MapComponent extends JXMapViewer
 		});
 	}	
 
+	public MapComponent(MapComponent other)
+	{
+		this();
+		
+		this.getControl().adoptConfiguration(other);
+	}
+	
 	public MapComponentController getControl()
 	{
 		return control;

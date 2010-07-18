@@ -22,6 +22,7 @@ import actions.GoToCoordinateAction;
 import actions.ManageBookmarksAction;
 import actions.OpenAction;
 import actions.SaveMapExtract;
+import actions.OpenFullscreenWindowAction;
 import data.Bookmark;
 import data.BookmarkManager;
 
@@ -88,6 +89,7 @@ public class MainMenuBar extends JMenuBar
 	private JMenu getMapMenu()
 	{
 		ApplicationAction gotoCoordinateAction = new GoToCoordinateAction(mainWindow);
+		ApplicationAction openFullscreenAction = new OpenFullscreenWindowAction(mainWindow);
 		ApplicationAction changeMapSourceAction_osm_mapnik = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_MAPNIK), mainWindow.getMapComponent());
 		ApplicationAction changeMapSourceAction_osm_tilesAtHome = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_TILESATHOME), mainWindow.getMapComponent());
 		ApplicationAction changeMapSourceAction_osm_cycle = new ChangeMapSourceAction(MapProvider.getMapSource(Map.OPENSTREETMAP_CYCLE), mainWindow.getMapComponent());
@@ -99,6 +101,9 @@ public class MainMenuBar extends JMenuBar
 		
 		current = menu.add(gotoCoordinateAction);
 		current.setAccelerator(gotoCoordinateAction.shortCut);
+		
+		current = menu.add(openFullscreenAction);
+		current.setAccelerator(openFullscreenAction.shortCut);
 		
 		menu.addSeparator();
 		

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 import maps.MapProvider;
 import maps.MapSource;
-import maps.OSMMapnik;
 import maps.Maps.Map;
+import maps.OSMMapnik;
 
 import org.jdesktop.swingx.JXMapViewer;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
@@ -69,9 +69,20 @@ public class MapComponentController
 	    view.repaint();
 	}
 	
+	public void adoptConfiguration(MapComponent other)
+	{
+		model.setMapSource(other.getModel().getMapSource());
+		view.setTileFactory(other.getModel().getMapSource().getTileFactory());
+		
+		GeoPosition geoPosition = new GeoPosition(other.getModel().getCurrentLatitude(), other.getModel().getCurrentLongitude());
+		view.setCenterPosition(geoPosition);
+		
+		view.setZoom(other.getZoom());
+	}
+	
 	public void setMapSource(MapSource mapSource)
 	{
-		model.setMap(mapSource.getMap());
+		model.setMapSource(mapSource);
 		
 		int zoom = view.getZoom();
 		GeoPosition geoPosition = view.getCenterPosition();
@@ -118,7 +129,7 @@ public class MapComponentController
 		
 		config.setProperty("mapcomponent.lastlatitude", view.getCenterPosition().getLatitude());
 		config.setProperty("mapcomponent.lastlongitude", view.getCenterPosition().getLongitude());
-		config.setProperty("mapcomponent.lastmap", model.getMap());
+		config.setProperty("mapcomponent.lastmap", model.getMapSource().getMap());
 		config.setProperty("mapcomponent.lastzoomlevel", view.getZoom());
 	}
 }
