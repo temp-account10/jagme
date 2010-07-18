@@ -43,7 +43,7 @@ public class AddBookmarkAction extends ApplicationAction
 			if(name.toString().length() > 0)
 			{
 				LatLon coordinates = new LatLon(mapComponent.getCenterPosition().getLatitude(), mapComponent.getCenterPosition().getLongitude());
-				Map map = mapComponent.getModel().getMap();
+				Map map = mapComponent.getModel().getMapSource().getMap();
 				int zoomlevel = mapComponent.getZoom();
 				
 				Bookmark bookmark = new Bookmark(name.toString(), coordinates, map, zoomlevel);
