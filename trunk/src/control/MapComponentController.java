@@ -75,6 +75,8 @@ public class MapComponentController
 		view.setTileFactory(other.getModel().getMapSource().getTileFactory());
 		
 		GeoPosition geoPosition = new GeoPosition(other.getModel().getCurrentLatitude(), other.getModel().getCurrentLongitude());
+		model.setCurrentLatitude(geoPosition.getLatitude());
+		model.setCurrentLongitude(geoPosition.getLongitude());
 		view.setCenterPosition(geoPosition);
 		
 		view.setZoom(other.getZoom());
@@ -108,7 +110,10 @@ public class MapComponentController
 			int zoomlevel = config.getIntegerProperty("mapcomponent.lastzoomlevel");
 
 			setMapSource(MapProvider.getMapSource(map));
-
+			
+			model.setCurrentLatitude(latitude);
+			model.setCurrentLongitude(longitude);
+			
 			view.setCenterPosition(new GeoPosition(latitude, longitude));
 			view.setZoom(zoomlevel);
 		}	
