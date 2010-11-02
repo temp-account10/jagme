@@ -1,7 +1,6 @@
 package data;
 
 import maps.MapSource;
-import maps.Maps.Map;
 
 public class MapComponentModel
 {

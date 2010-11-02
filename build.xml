@@ -38,10 +38,8 @@
 			<!-- All jar files necessary to run jargme --> 			
 			<zipfileset src="lib/geonames-1.0.1.jar" />
 			<zipfileset src="lib/jdom-1.0.jar" />
-			<zipfileset src="lib/swing-worker.jar" />
-			<zipfileset src="lib/swingx-bean.jar" /> 
-			<zipfileset src="lib/swingx-ws.jar" /> 
-			<zipfileset src="lib/swingx.jar" /> 
+			<zipfileset src="lib/swingx-core-1.6.2.jar" />
+			<zipfileset src="lib/swingx-ws-1.0.jar" /> 
 		</jar>
 	</target>
 

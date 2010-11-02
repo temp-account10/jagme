@@ -25,18 +25,17 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.text.MaskFormatter;
 
-import org.jdesktop.swingx.mapviewer.GeoPosition;
-
 import tools.CoordinateUtilities;
 import tools.ImageProvider;
 import control.ErrorHandler;
+import data.coordinate.LatLon;
 
 public class GotoCoordinateDialog
 {
 	public static enum Status { OK, CANCEL }
 	
 	private Status selectedValue;
-	private GeoPosition geoPosition;
+	private LatLon coordinate;
 	
 	private JDialog dialog;
 	private JTextField decLatitudeTextField;
@@ -137,22 +136,22 @@ public class GotoCoordinateDialog
 	
 	private void updateUI()
 	{
-		decLatitudeTextField.setText(new Double(geoPosition.getLatitude()).toString());
-		decLongitudeTextField.setText(new Double(geoPosition.getLongitude()).toString());
+		decLatitudeTextField.setText(new Double(coordinate.getLatitude()).toString());
+		decLongitudeTextField.setText(new Double(coordinate.getLongitude()).toString());
 		
-		degLatitudeTextField.setText(getFormattedCoordinateText(geoPosition.getLatitude(), true));
-		degLongitudeTextField.setText(getFormattedCoordinateText(geoPosition.getLongitude(), false));
+		degLatitudeTextField.setText(getFormattedCoordinateText(coordinate.getLatitude(), true));
+		degLongitudeTextField.setText(getFormattedCoordinateText(coordinate.getLongitude(), false));
 	}
 	
-	public void setGeoPosition(GeoPosition geoPosition)
+	public void setCoordinate(LatLon coordinate)
 	{
-		this.geoPosition = geoPosition;
+		this.coordinate = coordinate;
 		updateUI();
 	}
 	
-	public GeoPosition getGeoPosition()
+	public LatLon getCoordinate()
 	{
-		return geoPosition;
+		return coordinate;
 	}
 	
 	public Status show()
@@ -255,11 +254,11 @@ public class GotoCoordinateDialog
 			{
 				if(input == decLatitudeTextField)
 				{
-					decLatitudeTextField.setText(new Double(geoPosition.getLatitude()).toString());
+					decLatitudeTextField.setText(new Double(coordinate.getLatitude()).toString());
 				}
 				else if (input == decLongitudeTextField)
 				{
-					decLongitudeTextField.setText(new Double(geoPosition.getLongitude()).toString());
+					decLongitudeTextField.setText(new Double(coordinate.getLongitude()).toString());
 				}
 			}
 			
@@ -275,8 +274,8 @@ public class GotoCoordinateDialog
 		{
 			Object source = e.getSource();
 
-			double latitude = geoPosition.getLatitude();
-			double longitude = geoPosition.getLongitude();
+			double latitude = coordinate.getLatitude();
+			double longitude = coordinate.getLongitude();
 			
 			if(source == decLatitudeTextField)
 			{
@@ -299,7 +298,9 @@ public class GotoCoordinateDialog
 				ErrorHandler.handleFatalError(new Exception("Error in GotoCoordinateDialog: FocusListener applied on an unexpected component."));
 			}
 			
-			geoPosition = new GeoPosition(latitude, longitude);
+			coordinate.setLatitude(latitude);
+			coordinate.setLongitude(longitude);
+			
 			updateUI();
 		}
 		
